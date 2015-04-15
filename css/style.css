@@ -1,0 +1,21 @@
+img {
+	cursor: pointer;
+}
+
+#MyModal .modal-title {
+	text-align: center;
+}
+
+#results table td {
+	padding: 10px;
+	border: #ddd 1px solid;
+}
+
+#MyModal .modal-body img {
+	display: block;
+	margin: 0 auto;
+}
+
+#back {
+	float: left;
+}

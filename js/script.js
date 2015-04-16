@@ -4,24 +4,21 @@ function FlickrPhotos(){
 	this.selected_size = 100;
 	this.key = 'cf1427c7d1286ef56e1ca24e3921d6a6';
 	this.apiurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key='+this.key+
-					'&per_page=10&format=json&nojsoncallback=1';
+					'&per_page=10&format=json&jsoncallback=?';
 	this.load_image_class = $(".load_img");
 	
 	this.loadPhotos = function loadPhotos(container) {
-	
 		var obj = this;
 		container.empty();
-		
-		$.getJSON(this.apiurl,function(json){ 
-			if (json.stat != 'fail') {
-			
+
+		$.getJSON(this.apiurl, function(json){ 
+			if (json.stat != 'fail') {			
 				var b = 0;
-				
 				obj.showLoadImage(obj.load_image_class);
 				
 				$.each(json.photos.photo, function(i, myresult) { 
 					apiurl_size = 'https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key='+obj.key+
-									'&photo_id='+myresult.id+'&format=json&nojsoncallback=1';  
+									'&photo_id='+myresult.id+'&format=json&jsoncallback=?';  
 									
 					$.getJSON(apiurl_size, function(size) {
 						if (json.stat != 'fail') {
@@ -41,12 +38,16 @@ function FlickrPhotos(){
 						} else {
 							console.log(json.message);
 						}
+					}).error(function(jqXHR, textStatus, errorThrown) {
+						console.log(errorThrown); 
 					})
 				});
 			}  else {
 				console.log(json.message);
 			}
-		});		
+		}).error(function(jqXHR, textStatus, errorThrown) {
+			console.log(errorThrown); 
+		})
 	}
 	
 	this.showModalWindow = function showModalWindow(img, modal, modal_title, modal_body) {
@@ -75,6 +76,7 @@ function FlickrPhotos(){
 }
 
 $(function() {
+
 	var photos = new FlickrPhotos();
 
 	$(document).on('click', '#button', function() { 
